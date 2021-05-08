@@ -25,6 +25,9 @@ class DriverStatusDataset(Dataset):
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize([0.33708435, 0.42723662, 0.41629601], [0.2618102,  0.31948383, 0.33079577])
+        ]) if self.mode == 'train' else transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize([0.33708435, 0.42723662, 0.41629601], [0.2618102,  0.31948383, 0.33079577])
         ])
 
         self.read_csv()
@@ -46,21 +49,14 @@ class DriverStatusDataset(Dataset):
 
     def prepare_data(self):
         if self.mode == 'train':
-            folders = os.listdir(os.path.join(self.data_root, 'train'))
+            folders = os.listdir(os.path.join(self.data_root, self.mode))
             for folder in folders:
-                images = os.listdir(os.path.join(self.data_root, 'train', folder))
+                images = os.listdir(os.path.join(self.data_root, self.mode, folder))
                 for image in images:
                     label = self.image_label_map[image]
-                    self.images.append(image)
+                    self.images.append(os.path.join(self.data_root, self.mode, folder, image))
                     self.labels.append(label)
-        else:
-            folders = os.listdir(os.path.join(self.data_root, 'test'))
-            for folder in folders:
-                images = os.listdir(os.path.join(self.data_root, 'test', folder))
-                for image in images:
-                    label = self.image_label_map[image]
-                    self.images.append(image)
-                    self.labels.append(label)
+        # test no label
 
     def __getitem__(self, index):
         image = self.images[index]
