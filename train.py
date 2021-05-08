@@ -58,7 +58,7 @@ def train():
                 writer.add_scalar('loss', loss, num_epoch)
         scheduler.step()
         if (epoch + 1) % 2 == 0:
-            torch.save(model.state_dict(), 'weights/net_{}'.format(epoch+1))
+            torch.save(model.state_dict(), 'weights/net_{}.pth'.format(epoch+1))
             # valid
             # model.eval()
             # total = len(test_loader)
