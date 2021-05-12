@@ -36,6 +36,7 @@ def demo(image):
     load_pretrained_weights(model, './weights/net_20.pth')
     model = model.cuda()
     model.eval()
+    # print(model)
     softmax = nn.Softmax()
     im = Image.open(image)
     im = transform(im)
@@ -48,7 +49,7 @@ def demo(image):
     idx = np.argmax(y, axis=1)[0]
     # print(y)
     conf = y[0][idx]
-    # print(conf, idx)
+    print(conf, idx)
     status = CLASS_STATUS[idx]
     im_cv = cv2.imread(image)
     cv2.putText(im_cv, status, (10, 20), cv2.FONT_HERSHEY_DUPLEX, 0.5, (255, 255, 0))
@@ -61,4 +62,5 @@ def demo(image):
 
 if __name__ == '__main__':
     image = 'data/imgs/test/img_1.jpg'
+    # image = 'test.jpg'
     demo(image)
