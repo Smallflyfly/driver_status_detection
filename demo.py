@@ -7,7 +7,8 @@
 import cv2
 import torch
 from PIL import Image
-from torchvision.models import mobilenet_v3_small
+# from torchvision.models import mobilenet_v3_small, mobilenet_v2
+from model.mobilenetv2 import mobilenet_v2
 from utils.utils import load_pretrained_weights
 import torch.nn as nn
 import torchvision.transforms.transforms as transforms
@@ -32,8 +33,9 @@ def demo(image):
         transforms.ToTensor(),
         transforms.Normalize([0.33708435, 0.42723662, 0.41629601], [0.2618102, 0.31948383, 0.33079577])
     ])
-    model = mobilenet_v3_small(num_classes=10)
-    load_pretrained_weights(model, './weights/net_20.pth')
+    model = mobilenet_v2(num_classes=10)
+    # load_pretrained_weights(model, './weights/net_20.pth')
+    load_pretrained_weights(model, './weights/mobile_v2_net_relu_16.pth')
     model = model.cuda()
     model.eval()
     # print(model)
@@ -44,7 +46,6 @@ def demo(image):
     im = im.cuda()
     out = model(im)
     y = softmax(out)
-    print()
     y = y.cpu().detach().numpy()
     idx = np.argmax(y, axis=1)[0]
     # print(y)
@@ -61,6 +62,6 @@ def demo(image):
 
 
 if __name__ == '__main__':
-    image = 'data/imgs/test/img_1.jpg'
-    # image = 'test.jpg'
+    # image = 'data/imgs/test/img_1.jpg'
+    image = 'test.jpg'
     demo(image)
