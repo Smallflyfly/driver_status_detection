@@ -6,17 +6,18 @@
 """
 
 import torch
-from torchvision.models import mobilenet_v3_small, mobilenet_v2
+# from torchvision.models import mobilenet_v3_small, mobilenet_v2
+from model.mobilenetv2 import mobilenet_v2
 
 from utils.utils import load_pretrained_weights
 
 if __name__ == '__main__':
     torch.set_grad_enabled(False)
     model = mobilenet_v2(num_classes=10)
-    load_pretrained_weights(model, './weights/mobile_v2_last.pth')
+    load_pretrained_weights(model, './weights/mobile_v2_net_relu_16.pth')
     model.eval()
     model = model.cuda()
-    output_onnx = "driver_status_detection_mobile_v2.onnx"
+    output_onnx = "driver_status_detection_mobile_v2_relu.onnx"
     input_names = ['input']
     output_names = ['output']
 
